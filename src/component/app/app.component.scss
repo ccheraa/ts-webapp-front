@@ -1,0 +1,47 @@
+// md-toolbar {
+//   position: fixed;
+//   z-index: 999;
+//   transition: box-shadow 500ms;
+//   /deep/ md-toolbar-row {
+//     height: 64px;
+//   }
+//   &.toolbar {
+//     top: 0;
+//   }
+//   &.background {
+//     top: 64px;
+//     z-index: -1;
+//     /deep/ md-toolbar-row {
+//       height: 300px;
+//     }
+//   }
+//   a {
+//     padding: 0 4px;
+//   }
+//   md-progress-bar {
+//     position: absolute;
+//     top: 0;
+//     height: 8px;
+//     left: 0;
+//     transition: opacity 500ms, height 500ms;
+//     opacity: 1;
+//     &[hidden] {
+//       opacity: 0;
+//       height: 0;
+//     }
+//   }
+//   .title {
+//     padding: 0 1em;
+//   }
+//   .body {
+//     padding: 10px;
+//   }
+// }
+// button[role=menuitem][hidden] {
+//   height: 5px;
+//   background: black;
+//   opacity: 0.1;
+//   * {
+//     display: none;
+//   }
+// }

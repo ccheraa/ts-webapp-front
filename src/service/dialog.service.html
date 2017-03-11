@@ -1,0 +1,14 @@
+<md-card is-dialog>
+  <md-card-title *ngIf="options.title">{{options.title}}</md-card-title>
+  <md-card-content>
+    <p>{{options.message}}</p>
+  </md-card-content>
+  <md-card-actions ff>
+    <span fl></span>
+    <button md-button [attr.md-button]="button.mini ? null : ''" [attr.md-icon-button]="button.mini ? '' : null" [mdTooltip]="button.mini && button.text" *ngFor="let button of options.buttons" (click)="result(button.id)" color="primary">
+      <md-icon *ngIf="button.icon">{{button.icon}}</md-icon>
+      <span *ngIf="!button.mini">{{button.text}}</span>
+    </button>
+    <span *ngIf="options.buttons.length === 1" fl></span>
+  </md-card-actions>
+</md-card>

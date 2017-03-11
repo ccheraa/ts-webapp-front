@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../src/index.ts"],"names":[],"mappings":";;;;AAAA,4BAA0B;AAC1B,0BAAqB;AACrB,+BAA0B;AAC1B,iCAA4B","sourcesContent":["import 'reflect-metadata';\r\nexport * from './db';\r\nexport * from './service';\r\nexport * from './component';"]}

@@ -1,0 +1,33 @@
+import { OnInit } from '@angular/core';
+import { MenuItemClass } from '@ts-webapp/common';
+import { MenuService, LoaderService, UserService, DialogService, NavigatorService } from '../../service';
+export declare class AppComponent implements OnInit {
+    private document;
+    private menuService;
+    private userService;
+    private dialogService;
+    private loaderService;
+    private navigator;
+    dark: boolean;
+    rtl: boolean;
+    isHome: boolean;
+    leftPane: boolean;
+    rightPane: boolean;
+    user: boolean;
+    shaded: boolean;
+    loading: boolean;
+    vertMenu: any[];
+    title: string;
+    settings: MenuItemClass[];
+    menu: MenuItemClass[];
+    constructor(document: any, menuService: MenuService, userService: UserService, dialogService: DialogService, loaderService: LoaderService, navigator: NavigatorService);
+    body: any;
+    ngOnInit(): void;
+    onScroll(): void;
+    setDark(): void;
+    setRtl(): void;
+    goto(url: any): void;
+    back(): void;
+    logout(): void;
+    test(): void;
+}
