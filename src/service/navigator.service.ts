@@ -55,7 +55,7 @@ export class NavigatorService implements CanDeactivate<Component> {
           this.reject();
         }
       });
-    }
+    };
   }
   stop() {
     this.canGo = false;
@@ -127,3 +127,5 @@ export class NavigatorService implements CanDeactivate<Component> {
     }
   }
 }
+
+export const canDeactivate = [NavigatorService];
