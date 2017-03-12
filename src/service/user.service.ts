@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable, Subject } from 'rxjs';
-
+import { ApiUrl } from '@ts-webapp/common';
 import { LoaderService } from './loader.service';
 
 // TODO: correct the url in the requests
@@ -16,22 +16,22 @@ export class UserService {
   }
   login(username: string, password: string): Subject<any> {
     this.loader.load('login');
-    this.http.post('/api/user/login', { username, password}).subscribe(response => this.result('login', response.json().ok && response.json()));
+    this.http.post(ApiUrl() + '/user/login', { username, password}).subscribe(response => this.result('login', response.json().ok && response.json()));
     return this.activity;
   }
   logout(): Observable<any> {
     this.loader.load('logout');
-    this.http.post('/api/user/logout', null).subscribe(response => this.result('logout', response.json().ok && response.json()));
+    this.http.post(ApiUrl() + '/user/logout', null).subscribe(response => this.result('logout', response.json().ok && response.json()));
     return this.activity;
   }
   register(username: string, password: string): Observable<any> {
-    this.http.post('/api/user/register', { username, password}).subscribe(response => console.log(response));
+    this.http.post(ApiUrl() + '/user/register', { username, password}).subscribe(response => console.log(response));
     return this.activity;
   }
   check(post: boolean = false): Observable<any> {
     if (post) {
       this.loader.load('check');
-      this.http.post('/api/user/logged', null).subscribe(response => this.result('check', response.json().ok && response.json()));
+      this.http.post(ApiUrl() + '/user/logged', null).subscribe(response => this.result('check', response.json().ok && response.json()));
     }
     return this.activity;
   }

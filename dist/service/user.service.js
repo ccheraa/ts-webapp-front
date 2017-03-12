@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
 var rxjs_1 = require("rxjs");
+var common_1 = require("@ts-webapp/common");
 var loader_service_1 = require("./loader.service");
 // TODO: correct the url in the requests
 var UserService = (function () {
@@ -26,17 +27,17 @@ var UserService = (function () {
     UserService.prototype.login = function (username, password) {
         var _this = this;
         this.loader.load('login');
-        this.http.post('/api/user/login', { username: username, password: password }).subscribe(function (response) { return _this.result('login', response.json().ok && response.json()); });
+        this.http.post(common_1.ApiUrl() + '/user/login', { username: username, password: password }).subscribe(function (response) { return _this.result('login', response.json().ok && response.json()); });
         return this.activity;
     };
     UserService.prototype.logout = function () {
         var _this = this;
         this.loader.load('logout');
-        this.http.post('/api/user/logout', null).subscribe(function (response) { return _this.result('logout', response.json().ok && response.json()); });
+        this.http.post(common_1.ApiUrl() + '/user/logout', null).subscribe(function (response) { return _this.result('logout', response.json().ok && response.json()); });
         return this.activity;
     };
     UserService.prototype.register = function (username, password) {
-        this.http.post('/api/user/register', { username: username, password: password }).subscribe(function (response) { return console.log(response); });
+        this.http.post(common_1.ApiUrl() + '/user/register', { username: username, password: password }).subscribe(function (response) { return console.log(response); });
         return this.activity;
     };
     UserService.prototype.check = function (post) {
@@ -44,7 +45,7 @@ var UserService = (function () {
         if (post === void 0) { post = false; }
         if (post) {
             this.loader.load('check');
-            this.http.post('/api/user/logged', null).subscribe(function (response) { return _this.result('check', response.json().ok && response.json()); });
+            this.http.post(common_1.ApiUrl() + '/user/logged', null).subscribe(function (response) { return _this.result('check', response.json().ok && response.json()); });
         }
         return this.activity;
     };
