@@ -1,13 +1,6 @@
 "use strict";
 var rxjs_1 = require("rxjs");
-var rootUrl = '/api/db';
-function RootUrl(url) {
-    if (url) {
-        rootUrl = url;
-    }
-    return rootUrl;
-}
-exports.RootUrl = RootUrl;
+var common_1 = require("@ts-webapp/common");
 var ModelClient = (function () {
     function ModelClient() {
         this.url = '/';
@@ -45,7 +38,7 @@ var ModelClient = (function () {
         var _this = this;
         this.load('create:' + this.loaderName);
         var result = new rxjs_1.Subject();
-        this.http.post(rootUrl + this.url, { document: document }).subscribe(function (response) {
+        this.http.post(common_1.RootUrl() + this.url, { document: document }).subscribe(function (response) {
             _this.unload('create:' + _this.loaderName);
             _this.decodeResponse(result, response);
         }, function (err) {
@@ -59,7 +52,7 @@ var ModelClient = (function () {
         var _this = this;
         this.load('list:' + this.loaderName);
         var result = new rxjs_1.Subject();
-        this.http.post(rootUrl + this.url, { conditions: conditions, projection: projection, options: options }).subscribe(function (response) {
+        this.http.post(common_1.RootUrl() + this.url, { conditions: conditions, projection: projection, options: options }).subscribe(function (response) {
             _this.unload('list:' + _this.loaderName);
             _this.decodeResponse(result, response);
         }, function (err) {
@@ -72,7 +65,7 @@ var ModelClient = (function () {
         var _this = this;
         this.load('find:' + this.loaderName);
         var result = new rxjs_1.Subject();
-        this.http.post(rootUrl + this.url + '/find', { conditions: conditions, projection: projection, options: options }).subscribe(function (response) {
+        this.http.post(common_1.RootUrl() + this.url + '/find', { conditions: conditions, projection: projection, options: options }).subscribe(function (response) {
             _this.unload('find:' + _this.loaderName);
             _this.decodeResponse(result, response);
         }, function (err) {
@@ -86,7 +79,7 @@ var ModelClient = (function () {
         // TODO: conditions not used
         this.load('count:' + this.loaderName);
         var result = new rxjs_1.Subject();
-        this.http.get(rootUrl + this.url + '/count').subscribe(function (response) {
+        this.http.get(common_1.RootUrl() + this.url + '/count').subscribe(function (response) {
             _this.unload('count:' + _this.loaderName);
             _this.decodeResponse(result, response);
         }, function (err) {
@@ -100,7 +93,7 @@ var ModelClient = (function () {
         // TODO: projection and options not used
         this.load('get:' + this.loaderName);
         var result = new rxjs_1.Subject();
-        this.http.get(rootUrl + this.url + '/' + id).subscribe(function (response) {
+        this.http.get(common_1.RootUrl() + this.url + '/' + id).subscribe(function (response) {
             _this.unload('get:' + _this.loaderName);
             _this.decodeResponse(result, response);
         }, function (err) {
@@ -115,7 +108,7 @@ var ModelClient = (function () {
         // TODO: options not used
         this.load('set:' + this.loaderName);
         var result = new rxjs_1.Subject();
-        this.http.post(rootUrl + this.url + '/' + id, { document: document }).subscribe(function (response) {
+        this.http.post(common_1.RootUrl() + this.url + '/' + id, { document: document }).subscribe(function (response) {
             _this.unload('set:' + _this.loaderName);
             _this.decodeResponse(result, response);
         }, function (err) {
@@ -129,7 +122,7 @@ var ModelClient = (function () {
         // TODO: options not used
         this.load('update:' + this.loaderName);
         var result = new rxjs_1.Subject();
-        this.http.put(rootUrl + this.url, { conditions: conditions, document: document }).subscribe(function (response) {
+        this.http.put(common_1.RootUrl() + this.url, { conditions: conditions, document: document }).subscribe(function (response) {
             _this.unload('update:' + _this.loaderName);
             _this.decodeResponse(result, response);
         }, function (err) {
@@ -143,7 +136,7 @@ var ModelClient = (function () {
         this.load('remove:' + this.loaderName);
         var result = new rxjs_1.Subject();
         var isString = typeof conditions === 'string';
-        this.http.delete(rootUrl + this.url + (isString ? '/' + conditions : ''), isString ? null : { body: { conditions: conditions } }).subscribe(function (response) {
+        this.http.delete(common_1.RootUrl() + this.url + (isString ? '/' + conditions : ''), isString ? null : { body: { conditions: conditions } }).subscribe(function (response) {
             _this.unload('remove:' + _this.loaderName);
             _this.decodeResponse(result, response);
         }, function (err) {

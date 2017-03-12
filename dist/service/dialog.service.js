@@ -93,7 +93,7 @@ var DialogComponent = (function () {
 DialogComponent = __decorate([
     core_1.Component({
         selector: 'app-dialog',
-        templateUrl: 'dialog.service.html',
+        template: "\n<md-card is-dialog>\n  <md-card-title *ngIf=\"options.title\">{{options.title}}</md-card-title>\n  <md-card-content>\n    <p>{{options.message}}</p>\n  </md-card-content>\n  <md-card-actions ff>\n    <span fl></span>\n    <button md-button [attr.md-button]=\"button.mini ? null : ''\" [attr.md-icon-button]=\"button.mini ? '' : null\" [mdTooltip]=\"button.mini && button.text\" *ngFor=\"let button of options.buttons\" (click)=\"result(button.id)\" color=\"primary\">\n      <md-icon *ngIf=\"button.icon\">{{button.icon}}</md-icon>\n      <span *ngIf=\"!button.mini\">{{button.text}}</span>\n    </button>\n    <span *ngIf=\"options.buttons.length === 1\" fl></span>\n  </md-card-actions>\n</md-card>\n",
     }),
     __metadata("design:paramtypes", [material_1.MdDialogRef])
 ], DialogComponent);

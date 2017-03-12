@@ -33,3 +33,4 @@ export declare class NavigatorService implements CanDeactivate<Component> {
     home(home?: boolean): Observable<boolean>;
     menu(menu?: any[]): Observable<any[]>;
 }
+export declare const canDeactivate: typeof NavigatorService[];

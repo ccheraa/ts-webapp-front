@@ -2,7 +2,6 @@ import { Http } from '@angular/http';
 import { Subject } from 'rxjs';
 import { Loader } from './base';
 import { Multi } from '@ts-webapp/common';
-export declare function RootUrl(url?: string): string;
 export declare class ModelClient<T> {
     url: string;
     http: Http;

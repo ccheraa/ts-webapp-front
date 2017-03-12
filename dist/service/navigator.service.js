@@ -150,4 +150,5 @@ NavigatorService = __decorate([
     __metadata("design:paramtypes", [router_1.Router, dialog_service_1.DialogService, common_1.Location])
 ], NavigatorService);
 exports.NavigatorService = NavigatorService;
+exports.canDeactivate = [NavigatorService];
 //# sourceMappingURL=navigator.service.js.map

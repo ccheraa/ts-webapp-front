@@ -1,14 +1,7 @@
 import { Http } from '@angular/http';
 import { Observable, Subject } from 'rxjs';
 import { Loader } from './base';
-import { Multi } from '@ts-webapp/common';
-let  rootUrl = '/api/db';
-export function RootUrl(url?: string): string {
-  if (url) {
-    rootUrl = url;
-  }
-  return rootUrl;
-}
+import { Multi, RootUrl } from '@ts-webapp/common';
 export class ModelClient<T> {
   public url = '/';
   public http: Http;
@@ -48,7 +41,7 @@ export class ModelClient<T> {
   create(document: T | T[]): Subject<T | T[]> {
     this.load('create:' + this.loaderName);
     let result: Subject<T> = new Subject();
-    this.http.post(rootUrl + this.url, { document }).subscribe(
+    this.http.post(RootUrl() + this.url, { document }).subscribe(
       response => {
         this.unload('create:' + this.loaderName);
         this.decodeResponse(result, response);
@@ -65,7 +58,7 @@ export class ModelClient<T> {
   list(conditions?: T, projection?: any, options?: any): Subject<T[]> {
     this.load('list:' + this.loaderName);
     let result: Subject<T[]> = new Subject();
-    this.http.post(rootUrl + this.url, { conditions, projection, options}).subscribe(
+    this.http.post(RootUrl() + this.url, { conditions, projection, options}).subscribe(
       response => {
         this.unload('list:' + this.loaderName);
         this.decodeResponse(result, response);
@@ -80,7 +73,7 @@ export class ModelClient<T> {
   find(conditions?: T, projection?: any, options?: any): Subject<Multi<T>> {
     this.load('find:' + this.loaderName);
     let result: Subject<Multi<T>> = new Subject();
-    this.http.post(rootUrl + this.url + '/find', { conditions, projection, options}).subscribe(
+    this.http.post(RootUrl() + this.url + '/find', { conditions, projection, options}).subscribe(
       response => {
         this.unload('find:' + this.loaderName);
         this.decodeResponse(result, response);
@@ -96,7 +89,7 @@ export class ModelClient<T> {
     // TODO: conditions not used
     this.load('count:' + this.loaderName);
     let result: Subject<number> = new Subject();
-    this.http.get(rootUrl + this.url + '/count').subscribe(
+    this.http.get(RootUrl() + this.url + '/count').subscribe(
       response => {
         this.unload('count:' + this.loaderName);
         this.decodeResponse(result, response);
@@ -112,7 +105,7 @@ export class ModelClient<T> {
     // TODO: projection and options not used
     this.load('get:' + this.loaderName);
     let result: Subject<T> = new Subject();
-    this.http.get(rootUrl + this.url + '/' + id).subscribe(
+    this.http.get(RootUrl() + this.url + '/' + id).subscribe(
       response => {
         this.unload('get:' + this.loaderName);
         this.decodeResponse(result, response);
@@ -129,7 +122,7 @@ export class ModelClient<T> {
     // TODO: options not used
     this.load('set:' + this.loaderName);
     let result: Subject<T> = new Subject();
-    this.http.post(rootUrl + this.url + '/' + id, { document }).subscribe(
+    this.http.post(RootUrl() + this.url + '/' + id, { document }).subscribe(
       response => {
         this.unload('set:' + this.loaderName);
         this.decodeResponse(result, response);
@@ -145,7 +138,7 @@ export class ModelClient<T> {
     // TODO: options not used
     this.load('update:' + this.loaderName);
     let result: Subject<T> = new Subject();
-    this.http.put(rootUrl + this.url, { conditions, document }).subscribe(
+    this.http.put(RootUrl() + this.url, { conditions, document }).subscribe(
       response => {
         this.unload('update:' + this.loaderName);
         this.decodeResponse(result, response);
@@ -166,7 +159,7 @@ export class ModelClient<T> {
     let result: Subject<number> = new Subject();
     let isString = typeof conditions === 'string';
     this.http.delete(
-      rootUrl + this.url + (isString ? '/' + <string>conditions : ''),
+      RootUrl() + this.url + (isString ? '/' + <string>conditions : ''),
       isString ? null : { body: { conditions: conditions } }
     ).subscribe(
       response => {
