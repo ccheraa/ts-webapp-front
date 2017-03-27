@@ -48,7 +48,7 @@ var ModelClient = (function () {
         var result = new rxjs_1.Subject();
         this.http.post(common_1.DBUrl() + this.url, { document: document }).subscribe(function (response) {
             _this.unload('create:' + _this.loaderName);
-            _this.decodeResponse(result, response);
+            _this.decodeResponse(result, response, true);
         }, function (err) {
             _this.unload('create:' + _this.loaderName);
             result.error(err);
@@ -118,7 +118,7 @@ var ModelClient = (function () {
         var result = new rxjs_1.Subject();
         this.http.post(common_1.DBUrl() + this.url + '/' + id, { document: document }).subscribe(function (response) {
             _this.unload('set:' + _this.loaderName);
-            _this.decodeResponse(result, response);
+            _this.decodeResponse(result, response, true);
         }, function (err) {
             _this.unload('set:' + _this.loaderName);
             result.error(err);
@@ -132,7 +132,7 @@ var ModelClient = (function () {
         var result = new rxjs_1.Subject();
         this.http.put(common_1.DBUrl() + this.url, { conditions: conditions, document: document }).subscribe(function (response) {
             _this.unload('update:' + _this.loaderName);
-            _this.decodeResponse(result, response);
+            _this.decodeResponse(result, response, true);
         }, function (err) {
             _this.unload('update:' + _this.loaderName);
             result.error(err);
@@ -146,7 +146,7 @@ var ModelClient = (function () {
         var isString = typeof conditions === 'string';
         this.http.delete(common_1.DBUrl() + this.url + (isString ? '/' + conditions : ''), isString ? null : { body: { conditions: conditions } }).subscribe(function (response) {
             _this.unload('remove:' + _this.loaderName);
-            _this.decodeResponse(result, response);
+            _this.decodeResponse(result, response, true);
         }, function (err) {
             _this.unload('remove:' + _this.loaderName);
             result.error(err);

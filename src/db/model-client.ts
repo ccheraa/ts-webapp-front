@@ -51,7 +51,7 @@ export class ModelClient<T> {
     this.http.post(DBUrl() + this.url, { document }).subscribe(
       response => {
         this.unload('create:' + this.loaderName);
-        this.decodeResponse(result, response);
+        this.decodeResponse(result, response, true);
       },
       err => {
         this.unload('create:' + this.loaderName);
@@ -132,7 +132,7 @@ export class ModelClient<T> {
     this.http.post(DBUrl() + this.url + '/' + id, { document }).subscribe(
       response => {
         this.unload('set:' + this.loaderName);
-        this.decodeResponse(result, response);
+        this.decodeResponse(result, response, true);
       },
       err => {
         this.unload('set:' + this.loaderName);
@@ -148,7 +148,7 @@ export class ModelClient<T> {
     this.http.put(DBUrl() + this.url, { conditions, document }).subscribe(
       response => {
         this.unload('update:' + this.loaderName);
-        this.decodeResponse(result, response);
+        this.decodeResponse(result, response, true);
       },
       err => {
         this.unload('update:' + this.loaderName);
@@ -171,7 +171,7 @@ export class ModelClient<T> {
     ).subscribe(
       response => {
         this.unload('remove:' + this.loaderName);
-        this.decodeResponse(result, response);
+        this.decodeResponse(result, response, true);
       },
       err => {
         this.unload('remove:' + this.loaderName);
