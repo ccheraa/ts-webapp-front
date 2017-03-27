@@ -7,6 +7,7 @@ export class ModelClient<T> {
   public http: Http;
   loader: Loader;
   loaderName: string;
+  checking = new Subject<any>();
   useLoader(loader: Loader, loaderName: string) {
     this.loader = loader;
     this.loaderName = loaderName;
@@ -21,11 +22,17 @@ export class ModelClient<T> {
       this.loader.unload(id);
     }
   }
-  decodeResponse(subject: Subject<any>, response: any) {
+  check (): Observable<any> {
+    return this.checking;
+  }
+  decodeResponse(subject: Subject<any>, response: any, refresh = false) {
     if (response.json) {
       let json = response.json();
       if (json.ok) {
         subject.next(json.data);
+        if (refresh) {
+          this.checking.next();
+        }
       } else {
         subject.error(json.errors);
       }

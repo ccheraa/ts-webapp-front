@@ -1,5 +1,5 @@
 import { Http } from '@angular/http';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Loader } from './base';
 import { Multi } from '@ts-webapp/common';
 export declare class ModelClient<T> {
@@ -7,10 +7,12 @@ export declare class ModelClient<T> {
     http: Http;
     loader: Loader;
     loaderName: string;
+    checking: Subject<any>;
     useLoader(loader: Loader, loaderName: string): void;
     load(id: string): void;
     unload(id: string): void;
-    decodeResponse(subject: Subject<any>, response: any): void;
+    check(): Observable<any>;
+    decodeResponse(subject: Subject<any>, response: any, refresh?: boolean): void;
     create(document: T): Subject<T>;
     create(documents: T[]): Subject<T[]>;
     list(conditions?: T, projection?: any, options?: any): Subject<T[]>;

@@ -4,6 +4,7 @@ var common_1 = require("@ts-webapp/common");
 var ModelClient = (function () {
     function ModelClient() {
         this.url = '/';
+        this.checking = new rxjs_1.Subject();
     }
     ModelClient.prototype.useLoader = function (loader, loaderName) {
         this.loader = loader;
@@ -19,11 +20,18 @@ var ModelClient = (function () {
             this.loader.unload(id);
         }
     };
-    ModelClient.prototype.decodeResponse = function (subject, response) {
+    ModelClient.prototype.check = function () {
+        return this.checking;
+    };
+    ModelClient.prototype.decodeResponse = function (subject, response, refresh) {
+        if (refresh === void 0) { refresh = false; }
         if (response.json) {
             var json = response.json();
             if (json.ok) {
                 subject.next(json.data);
+                if (refresh) {
+                    this.checking.next();
+                }
             }
             else {
                 subject.error(json.errors);
