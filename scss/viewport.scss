@@ -1,0 +1,16 @@
+html[viewport] {
+  height: 100%;
+  overflow: hidden;
+  body {
+    height: 100%;
+    div.app {
+      height: 100%;
+      > .body {
+        // overflow-y: auto;
+        > router-outlet + * > *[viewport] {
+          // height: 100%;
+        }
+      }
+    }
+  }
+}

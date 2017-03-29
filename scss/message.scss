@@ -1,0 +1,26 @@
+@import 'theme.scss';
+@mixin app-msg() {
+  md-card {
+    margin:-24px;
+    min-width:320px;
+  }
+}
+@mixin app-msg-theme($bg, $fg, $color, $dark-level) {
+}
+@mixin app-msg-dir($direction) {
+  direction: if($direction == rtl, rtl, ltr);
+}
+app-msg {
+  @include app-msg();
+  @include app-msg-theme($mat-light-theme-background, $mat-light-theme-foreground, $primary, 700);
+  @include app-msg-dir(ltr);
+}
+.theme-darkapp-msg,
+.theme-dark app-msg {
+  @include app-msg-theme($mat-dark-theme-background, $mat-dark-theme-foreground, $dark-primary, 800);
+}
+body.rtl {
+  app-msg {
+    @include app-msg-dir(rtl);
+  }
+}

@@ -1,0 +1,38 @@
+@import '~@angular/material/core/theming/all-theme';
+
+// NOTE: Theming is currently experimental and not yet publically released!
+
+@include mat-core();
+
+$primary: mat-palette($mat-indigo);
+$accent:  mat-palette($mat-pink, A200, A100, A400);
+
+$theme: mat-light-theme($primary, $accent);
+
+@include angular-material-theme($theme);
+
+body {
+  background-color: map-get($mat-light-theme-background, background);
+  &.theme-dark {
+    background-color: map-get($mat-dark-theme-background, background);
+  }
+}
+
+$dark-primary: mat-palette($mat-pink, 700, 500, 900);
+$dark-accent:  mat-palette($mat-blue-grey, A200, A100, A400);
+$dark-warn:    mat-palette($mat-deep-orange);
+
+$dark-primary: mat-palette($mat-teal, 700, 500, 900);
+$dark-accent:  mat-palette($mat-yellow, A200, A100, A400);
+$dark-warn:    mat-palette($mat-deep-orange);
+
+$dark-primary: mat-palette($mat-deep-purple, 700, 500, 900);
+$dark-accent:  mat-palette($mat-green, A200, A100, A400);
+$dark-primary: mat-palette($mat-deep-purple, 800);
+$dark-accent:  mat-palette($mat-green, A200, A100, A400);
+$dark-warn:    mat-palette($mat-deep-orange);
+
+$dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+.theme-dark {
+  @include angular-material-theme($dark-theme);
+}

@@ -1,0 +1,385 @@
+@import 'theme.scss';
+@mixin table() {
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+  // position: relative;
+  >[md-table-title] {
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: 400;
+    padding: 12px 24px;
+    display: flex;
+  }
+  >.search {
+    // * { white-space: nowrap }
+    line-height: 55px;
+    height: 55px;
+    display: flex;
+    padding: 0 8px;
+    z-index: 1;
+    // transition: background-color 160ms;
+    margin-bottom: -56px;
+    > md-icon, button[md-icon-button] {
+      margin: auto 8px;
+    }
+    [spacer] {
+      flex: 1;
+    }
+  }
+  >.actions {
+    * { white-space: nowrap }
+    line-height: 55px;
+    height: 55px;
+    display: flex;
+    padding: 0 8px;
+    transition: background-color 160ms;
+    [md-button] {
+      min-width: initial;
+    }
+    [selection] {
+      padding: 0 16px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    >div {
+      display: flex;
+      align-items: center;
+    }
+    >.left, >.center, >.right {
+      display: block;
+      &.center {
+        width: 100%;
+        height: 100%;
+      }
+      >* {
+        display: block;
+        width: 100%;
+        // align-items: flex-start;
+        >div {
+          height: 56px;
+          margin-bottom: -56px;
+          flex: 1;
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+    [spacer] {
+      flex: 1;
+    }
+  }
+  >.content {
+    overflow-x: auto;
+    overflow-y: hidden;
+    >table {
+      position: relative;
+      width: 100%;
+      border-spacing: 0;
+      >* {
+        >tr {
+          >td {
+            font-size: 14px;
+            border: 0 none;
+            line-height: 47px;
+            padding: 0;
+            white-space: nowrap;
+            &.main {
+              width: 100%;
+            }
+            &.center {
+              text-align: center;
+            }
+          }
+        }
+      }
+      >thead {
+        >div.header {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 56px;
+          z-index: 10;
+          transition: box-shadow 500;
+          @include mat-elevation(0);
+          &.shaded {
+            @include mat-elevation(12);
+          }
+        }
+        >tr {
+          >td {
+            // font-size: 12px;
+            position: relative;
+            z-index: 11;
+            line-height: 55px;
+            &[sorted], &.sort:hover {
+              // font-weight: 500;
+              position: relative;
+              &.sort {
+                cursor: pointer;
+                &[sorted=up]:before { content: '\E5D8'; }
+                &[sorted=down]:before { content: '\E5DB'; }
+                &:not([sorted]):hover:before {
+                  content: '\E5DB';
+                }
+              }
+              &:before {
+                position: absolute;
+                top: 0;
+                line-height: 52px;
+                // .material-icons
+                font-family: 'Material Icons';
+                font-weight: normal;
+                font-style: normal;
+                font-size: 16px;
+                // line-height: 1;
+                letter-spacing: normal;
+                text-transform: none;
+                display: block;
+                white-space: nowrap;
+                word-wrap: normal;
+                direction: ltr;
+                -webkit-font-feature-settings: 'liga';
+                font-feature-settings: 'liga';
+                -webkit-font-smoothing: antialiased;
+              }
+            }
+          }
+        }
+      }
+      >tbody {
+        >tr {
+          transition: background-color 500ms;
+          &:hover {
+            transition: none;
+          }
+          >td {
+            &[empty]:empty:before {
+              content: "...";
+            }
+            &[empty]:empty:before, [empty] {
+              font-size: 13px;
+            }
+            &.pointer {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+  >.footer {
+    line-height: 56px;
+    font-size: 14px;
+    padding: 0 24px;
+    display: flex;
+    >* {
+      margin: 0 8px;
+    }
+    >[md-icon-button] {
+      margin: 8px 0;
+    }
+    span[spacer] {
+      flex: 1;
+    }
+    >md-select {
+      margin: 12px;
+      line-height: initial;
+      .md-select-trigger {
+        min-width: 44px;
+      }
+    }
+  }
+}
+@mixin table-theme($bg, $fg, $color, $hue) {
+  background-color: map-get($bg, card);
+  color: map-get($fg, text);
+  >[md-table-title] {
+    color: map-get($fg, text);
+  }
+  >.search {
+    border-bottom: 1px solid map-get($fg, divider);
+  }
+  >.actions {
+    border-bottom: 1px solid map-get($fg, divider);
+    [selection] {
+      color: mat-color($color);
+    }
+    &.selected {
+      background-color: mat-color($color, $hue);
+    }
+  }
+  >.content {
+    >table {
+      >* {
+        >tr {
+          >td {
+            color: map-get($fg, text);
+            border-bottom: 1px solid map-get($fg, divider);
+          }
+        }
+      }
+      >thead {
+        >div.header {
+          background-color: map-get($bg, card);
+        }
+        >tr {
+          >td {
+            color: map-get($fg, secondary-text);
+            &[sorted], &.sort:hover {
+              color: map-get($fg, text);
+              &.sort {
+                &:not([sorted]):hover:before {
+                  color: map-get($fg, hint-text);
+                }
+              }
+            }
+          }
+        }
+      }
+      >tbody {
+        >tr {
+          &:hover {
+            background-color: map-get($bg, hover);
+          }
+          &.selected {
+            background-color: rgba(black, 0.07);
+          }
+          >td {
+            &[empty]:empty:before, [empty] {
+              color: map-get($fg, disabled-text);
+            }
+          }
+        }
+      }
+    }
+  }
+  >.footer {
+    color: map-get($fg, secondary-text);
+  }
+}
+@mixin table-dir($direction) {
+  >.search {
+    > md-icon {
+      @if $direction == rtl {
+        margin-left: initial;
+        margin-right: 16px;
+      } @else {
+        margin-left: 16px;
+      }
+    }
+    > button[md-icon-button] {
+      @if $direction == rtl {
+        margin-right: initial;
+        margin-left: 0;
+      } @else {
+        margin-right: 0;
+      }
+    }
+  }
+  >.content {
+    >table {
+      >* {
+        >tr {
+          >td {
+            @if $direction == rtl {
+              padding-left: 32px;
+              padding-right: 24px;
+            } @else {
+              padding-left: 24px;
+              padding-right: 32px;
+            }
+            &.isid, &.main {
+              @if $direction == rtl {
+                // padding-right: initial;
+                padding-left: 0px;
+              } @else {
+                padding-right: 0px;
+              }
+            }
+            &:last-child {
+              @if $direction == rtl {
+                // padding-right: initial;
+                padding-left: 24px;
+              } @else {
+                padding-right: 24px;
+              }
+            }
+          }
+        }
+      }
+      >thead {
+        >tr {
+          >td {
+            &[sorted], &.sort:hover {
+              &:before {
+                @if $direction == rtl {
+                  left: initial;
+                  right: 4px;
+                } @else {
+                  left: 4px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin fixed() {
+  [fixed],
+  [fixed-10] {
+    > .table {
+      flex-direction: column;
+      display: flex;
+      height: 100%;
+      >.content {
+        // height: 537px;
+        flex: 1;
+        overflow-y: auto;
+      }
+    }
+  }
+  [fixed-10] {
+    > .table {
+      >.content {
+        height: 537px;
+      }
+    }
+  }
+}
+@include fixed();
+.theme-dark {
+  @include fixed();
+}
+.table {
+  @include table();
+  @include table-theme(
+    $mat-light-theme-background,
+    $mat-light-theme-foreground,
+    $primary, 50
+  );
+  @include table-dir(ltr);
+}
+.theme-dark.table,
+.theme-dark .table {
+  @include table-theme(
+    $mat-dark-theme-background,
+    $mat-dark-theme-foreground,
+    $dark-primary, 900
+  );
+}
+body.rtl {
+  .table {
+    @include table-dir(rtl);
+  }
+}
+
+.md-select-panel {
+  color: map-get($mat-light-theme-foreground, text);
+}
+
+.theme-dark  .md-select-panel {
+  color: map-get($mat-dark-theme-foreground, text);
+}

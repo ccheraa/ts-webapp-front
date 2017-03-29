@@ -1,0 +1,318 @@
+$app-sidebar-main-width: 176px;
+$app-sidebar-side-width: 240px;
+$app-animation: 300ms;
+$app-loading-animation: 500ms;
+$app-avatar: 40px;
+$app-progressbar-height: 4px;
+@import 'theme.scss';
+@mixin app() {
+  min-width: 960px;
+  display: flex;
+  flex-direction: row;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  > .sidebar {
+    transition: width $app-animation, margin $app-animation;
+    position: relative;
+    z-index: 100;
+    width: 0;
+    &[always] {
+      width: 56px;
+      &:before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+      }
+    }
+    padding: 0 0 8px 0;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    @include mat-elevation(0);
+    &.wide {
+      @include mat-elevation(16);
+      > span.title {
+        opacity: 1;
+      }
+      > [md-icon-button] {
+        display: none;
+        &[avatar] {
+          display: block;
+        }
+        &[menu] {
+          display: block;
+          md-icon {
+            display: none;
+            &[wide] {
+              display: inline-block;
+            }
+          }
+        }
+      }
+      > [md-button] {
+        display: block;
+      }
+    }
+    &.main {
+      &.wide {
+        width: $app-sidebar-main-width;
+      }
+    }
+    &.side {
+      &.wide {
+        width: $app-sidebar-side-width;
+      }
+    }
+    > .sidebar-overlay {
+      background-color: transparent;
+      display: block;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      z-index: 1;
+    }
+    > .fill {
+      flex: 1;
+    }
+    > span.title {
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      height: 64px;
+      line-height: 64px;
+      white-space: nowrap;
+    }
+    > [md-icon-button] {
+      margin-left: 8px;
+      margin-right: 8px;
+      &[avatar] {
+        margin: 8px auto;
+        line-height: 48px;
+        width: 48px;
+        height: 48px;
+        img {
+          width: 40px;
+          height: 40px;
+          border-radius: 100%;
+        }
+      }
+      &[menu] {
+        md-icon {
+          display: inline-block;
+          &[wide] {
+            display: none;
+          }
+        }
+      }
+    }
+    > [md-button] {
+      height: 40px;
+      display: none;
+    }
+  }
+  > .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    md-toolbar {
+      position: relative;
+      z-index: 1;
+      transition: box-shadow $app-animation;
+      @include mat-elevation(1);
+      &.shaded {
+        @include mat-elevation(12);
+      }
+      [md-icon-button] {
+        margin-left: 8px;
+        margin-right: 8px;
+        // &[back] {
+        //   margin-left: -8px;
+        //   margin-right: 8px;
+        // }
+        &[avatar] {
+          margin: (40px - $app-avatar) / 2 0;
+          line-height: $app-avatar;
+          width: $app-avatar;
+          height: $app-avatar;
+          img {
+            width: $app-avatar - 8px;
+            height: $app-avatar - 8px;
+            border-radius: 100%;
+          }
+          md-icon {
+            font-size: $app-avatar - 8px;
+            width: $app-avatar - 8px;
+            height: $app-avatar - 8px;
+            line-height: $app-avatar - 8px;
+          }
+        }
+      }
+      md-progress-bar {
+        position: absolute;
+        bottom: 0;
+        height: $app-progressbar-height;
+        left: 0;
+        z-index: 1;
+        transition: opacity $app-loading-animation, height $app-loading-animation;
+        opacity: 1;
+        &[hidden] {
+          opacity: 0;
+          height: 0;
+        }
+      }
+    }
+    .body-content {
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      &::-webkit-scrollbar {
+        // display: none;
+      }
+      > * {
+        flex: 1;
+      }
+      > router-outlet {
+        flex: 0;
+      }
+    }
+  }
+}
+@mixin app-theme($bg, $fg, $color, $dark-level) {
+  background-color: map-get($bg, card);
+  color: map-get($fg, text);
+  > .sidebar {
+    background-color: map-get($bg, card);
+    color: map-get($fg, text);
+    &[always] {
+      background-color: mat-color($color);
+      color: mat-color($color, 50);
+      &:before {
+        background-color: mat-color($color, $dark-level);
+      }
+    }
+  }
+}
+@mixin app-dir($direction) {
+  > .sidebar {
+    &.main {
+      > .sidebar-overlay {
+        @if $direction == rtl {
+          left: 0;
+          right: 100%;
+        } @else {
+          left: 100%;
+          right: 0;
+        }
+      }
+      &.wide {
+        @if $direction == rtl {
+          margin-left: - $app-sidebar-main-width;
+          margin-right: 0;
+        } @else {
+          margin-left: 0;
+          margin-right: - $app-sidebar-main-width;
+        }
+        &[always] {
+          @if $direction == rtl {
+            margin-left: 56px - $app-sidebar-main-width;
+            margin-right: 0;
+          } @else {
+            margin-left: 0;
+            margin-right: 56px - $app-sidebar-main-width;
+          }
+        }
+        > .sidebar-overlay {
+          @if $direction == rtl {
+            right: $app-sidebar-main-width;
+          } @else {
+            left: $app-sidebar-main-width;
+          }
+        }
+      }
+    }
+    &.side {
+      > .sidebar-overlay {
+        @if $direction == rtl {
+          left: 100%;
+          right: 0;
+        } @else {
+          left: 0;
+          right: 100%;
+        }
+      }
+      &.wide {
+        @if $direction == rtl {
+          margin-left: 0;
+          margin-right: - $app-sidebar-side-width;
+        } @else {
+          margin-left: - $app-sidebar-side-width;
+          margin-right: 0;
+        }
+        &[always] {
+          @if $direction == rtl {
+            margin-left: 0;
+            margin-right: 56px - $app-sidebar-side-width;
+          } @else {
+            margin-left: 56px - $app-sidebar-side-width;
+            margin-right: 0;
+          }
+        }
+        > .sidebar-overlay {
+          @if $direction == rtl {
+            left: $app-sidebar-side-width;
+          } @else {
+            right: $app-sidebar-side-width;
+          }
+        }
+      }
+    }
+    > span.title {
+      @if $direction == rtl {
+        left: 0;
+        right: 56px;
+      } @else {
+        left: 56px;
+        right: 0;
+      }
+    }
+    > [md-icon-button] {
+      &[menu] {
+        @if $direction == rtl {
+          margin: 12px 8px 20px auto;
+        } @else {
+          margin: 12px auto 20px 8px;
+        }
+      }
+    }
+    > [md-button] {
+      text-align: if($direction == rtl, right, left);
+    }
+  }
+  > .body {
+    md-toolbar {
+      @if $direction == rtl {
+        padding-left: 16;
+        padding-right: 0;
+      } @else {
+        padding-left: 0;
+        padding-right: 16;
+      }
+    }
+  }
+}
+.app {
+  @include app();
+  @include app-theme($mat-light-theme-background, $mat-light-theme-foreground, $primary, 700);
+  @include app-dir(ltr);
+}
+.theme-dark.app,
+.theme-dark .app {
+  @include app-theme($mat-dark-theme-background, $mat-dark-theme-foreground, $dark-primary, 800);
+}
+body.rtl {
+  .app {
+    @include app-dir(rtl);
+  }
+}
