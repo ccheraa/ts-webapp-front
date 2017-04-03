@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,10 +7,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var rxjs_1 = require("rxjs");
-var material_1 = require("@angular/material");
-var common_1 = require("@ts-webapp/common");
+import { Component, Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { MdDialog, MdDialogRef } from '@angular/material';
+import { DialogClass } from '@ts-webapp/common';
 var DialogService = (function () {
     function DialogService(dialog) {
         this.dialog = dialog;
@@ -32,7 +31,7 @@ var DialogService = (function () {
     DialogService.prototype.run = function (options) {
         var dialog = this.dialog.open(DialogComponent, { disableClose: options.modal || this.isModal });
         this.isModal = false;
-        dialog.componentInstance.options = new common_1.DialogClass(options.title, options.message, options.buttons);
+        dialog.componentInstance.options = new DialogClass(options.title, options.message, options.buttons);
         options.buttons = dialog.componentInstance.options.buttons;
         return dialog.afterClosed();
     };
@@ -50,7 +49,7 @@ var DialogService = (function () {
     };
     DialogService.prototype.confirm = function (title, message, buttons) {
         if (buttons === void 0) { buttons = ['OK', 'Cancel']; }
-        var result = new rxjs_1.Subject();
+        var result = new Subject();
         if (!message) {
             message = title;
             title = '';
@@ -73,10 +72,10 @@ var DialogService = (function () {
     return DialogService;
 }());
 DialogService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [material_1.MdDialog])
+    Injectable(),
+    __metadata("design:paramtypes", [MdDialog])
 ], DialogService);
-exports.DialogService = DialogService;
+export { DialogService };
 var DialogComponent = (function () {
     function DialogComponent(dialogRef) {
         this.dialogRef = dialogRef;
@@ -91,11 +90,11 @@ var DialogComponent = (function () {
     return DialogComponent;
 }());
 DialogComponent = __decorate([
-    core_1.Component({
+    Component({
         selector: 'app-dialog',
         template: "\n<md-card is-dialog>\n  <md-card-title *ngIf=\"options.title\">{{options.title}}</md-card-title>\n  <md-card-content>\n    <p>{{options.message}}</p>\n  </md-card-content>\n  <md-card-actions ff>\n    <span fl></span>\n    <button md-button [attr.md-button]=\"button.mini ? null : ''\" [attr.md-icon-button]=\"button.mini ? '' : null\" [mdTooltip]=\"button.mini && button.text\" *ngFor=\"let button of options.buttons\" (click)=\"result(button.id)\" color=\"primary\">\n      <md-icon *ngIf=\"button.icon\">{{button.icon}}</md-icon>\n      <span *ngIf=\"!button.mini\">{{button.text}}</span>\n    </button>\n    <span *ngIf=\"options.buttons.length === 1\" fl></span>\n  </md-card-actions>\n</md-card>\n",
     }),
-    __metadata("design:paramtypes", [material_1.MdDialogRef])
+    __metadata("design:paramtypes", [MdDialogRef])
 ], DialogComponent);
-exports.DialogComponent = DialogComponent;
+export { DialogComponent };
 //# sourceMappingURL=dialog.service.js.map

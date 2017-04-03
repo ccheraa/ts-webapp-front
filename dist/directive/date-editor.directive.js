@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,11 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
+import { Directive, ElementRef, Output, Input, EventEmitter, HostListener } from '@angular/core';
 var DateEditorDirective = (function () {
     function DateEditorDirective(el) {
         this.el = el;
-        this.dateChange = new core_1.EventEmitter(true);
+        this.dateChange = new EventEmitter(true);
     }
     DateEditorDirective.prototype.ngOnInit = function () {
         if (typeof this.date === 'undefined') {
@@ -33,24 +32,24 @@ var DateEditorDirective = (function () {
     return DateEditorDirective;
 }());
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], DateEditorDirective.prototype, "dateChange", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Date)
 ], DateEditorDirective.prototype, "date", void 0);
 __decorate([
-    core_1.HostListener('change'),
+    HostListener('change'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], DateEditorDirective.prototype, "onChange", null);
 DateEditorDirective = __decorate([
-    core_1.Directive({
+    Directive({
         selector: '[date-value]'
     }),
-    __metadata("design:paramtypes", [core_1.ElementRef])
+    __metadata("design:paramtypes", [ElementRef])
 ], DateEditorDirective);
-exports.DateEditorDirective = DateEditorDirective;
+export { DateEditorDirective };
 //# sourceMappingURL=date-editor.directive.js.map

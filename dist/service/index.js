@@ -1,24 +1,20 @@
-"use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-__export(require("./loader.service"));
-__export(require("./user.service"));
-__export(require("./dialog.service"));
-__export(require("./navigator.service"));
-__export(require("./menu.service"));
+export * from './loader.service';
+export * from './user.service';
+export * from './dialog.service';
+export * from './navigator.service';
+export * from './menu.service';
 /// exports
-var user_service_1 = require("./user.service");
-var dialog_service_1 = require("./dialog.service");
-var loader_service_1 = require("./loader.service");
-var navigator_service_1 = require("./navigator.service");
-var menu_service_1 = require("./menu.service");
+import { UserService } from './user.service';
+import { DialogService } from './dialog.service';
+import { LoaderService } from './loader.service';
+import { NavigatorService } from './navigator.service';
+import { MenuService } from './menu.service';
 /// imports
-exports.LIB_SERVICES = [
-    user_service_1.UserService,
-    dialog_service_1.DialogService,
-    loader_service_1.LoaderService,
-    navigator_service_1.NavigatorService,
-    menu_service_1.MenuService,
+export var LIB_SERVICES = [
+    UserService,
+    DialogService,
+    LoaderService,
+    NavigatorService,
+    MenuService,
 ];
 //# sourceMappingURL=index.js.map

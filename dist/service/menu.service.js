@@ -1,13 +1,12 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var core_1 = require("@angular/core");
+import { Injectable } from '@angular/core';
 // import { Http } from '@angular/http';
-var rxjs_1 = require("rxjs");
+import { Subject } from 'rxjs';
 var dummy = [
     { text: 'New offer', icon: 'library_add', id: 'offer' },
     { text: 'Offers', icon: 'library_books', id: 'offers' },
@@ -20,7 +19,7 @@ var MenuService = (function () {
     }
     // constructor(private http: Http) {}
     MenuService.prototype.getItems = function () {
-        var subject = new rxjs_1.Subject();
+        var subject = new Subject();
         setTimeout(function () {
             subject.next(dummy);
             subject.complete();
@@ -30,7 +29,7 @@ var MenuService = (function () {
     return MenuService;
 }());
 MenuService = __decorate([
-    core_1.Injectable()
+    Injectable()
 ], MenuService);
-exports.MenuService = MenuService;
+export { MenuService };
 //# sourceMappingURL=menu.service.js.map

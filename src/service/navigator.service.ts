@@ -29,7 +29,7 @@ export class NavigatorService implements CanDeactivate<Component> {
     component: Component,
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<boolean>|Promise<boolean>|boolean {
+  ): Observable<boolean>|boolean {
     // console.log(component, route, state);
     // this.safeUrl = this.url;
     this.url = [];

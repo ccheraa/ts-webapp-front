@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 import { Data } from '../table/table.component'
 import { template } from './table-editor.component.html';
+import { objectAssign } from '@ts-webapp/common';
 
 @Component({
   selector: 'app-table-editor',
@@ -22,7 +23,7 @@ export class TableEditorComponent implements OnInit {
     if (this.data) {
       console.log(this.data);
       this.cleanColumns();
-      this.edited.assign(this.data.row);
+      objectAssign(this.edited, this.data.row);
     }
   }
 

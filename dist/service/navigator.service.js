@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,11 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var router_1 = require("@angular/router");
-var rxjs_1 = require("rxjs");
-var dialog_service_1 = require("./dialog.service");
+import { Injectable } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { DialogService } from './dialog.service';
 var NavigatorService = (function () {
     function NavigatorService(router, dialog, location) {
         this.router = router;
@@ -22,11 +21,11 @@ var NavigatorService = (function () {
         // private safeUrl: any[] = [];
         this.messages = {};
         this.subscriptions = {};
-        this.observable = new rxjs_1.Subject();
-        this.autoObservable = new rxjs_1.Subject();
-        this.titleObservable = new rxjs_1.Subject();
-        this.homeObservable = new rxjs_1.Subject();
-        this.menuObservable = new rxjs_1.Subject();
+        this.observable = new Subject();
+        this.autoObservable = new Subject();
+        this.titleObservable = new Subject();
+        this.homeObservable = new Subject();
+        this.menuObservable = new Subject();
         this.canGo = false;
         // window.onbeforeunload = (e) => {
         //   let messages = Object.keys(this.messages)
@@ -146,9 +145,9 @@ var NavigatorService = (function () {
     return NavigatorService;
 }());
 NavigatorService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [router_1.Router, dialog_service_1.DialogService, common_1.Location])
+    Injectable(),
+    __metadata("design:paramtypes", [Router, DialogService, Location])
 ], NavigatorService);
-exports.NavigatorService = NavigatorService;
-exports.canDeactivate = [NavigatorService];
+export { NavigatorService };
+export var canDeactivate = [NavigatorService];
 //# sourceMappingURL=navigator.service.js.map

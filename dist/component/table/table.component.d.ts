@@ -1,9 +1,8 @@
-/// <reference types="es6-promise" />
 import { OnInit, EventEmitter } from '@angular/core';
 import { ComponentType } from '@angular/material';
 import { NavigatorService, DialogService } from '../../service';
 import { TableEditorComponent } from '../table-editor/table-editor.component';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ModelClient } from '../../db';
 export declare type Column = {
     isid?: boolean;
@@ -35,7 +34,7 @@ export declare class TableComponent implements OnInit {
     config: {
         table: string;
         checkbox?: boolean;
-        createID?: (item: any) => Promise<any>;
+        createID?: (item: any) => Observable<any> | Boolean;
         edit?: ComponentType<any>;
         main?: Column;
         columns: Column[];
@@ -76,9 +75,9 @@ export declare class TableComponent implements OnInit {
     limitChange(): void;
     select(item: any): void;
     sort(field: any): void;
-    doDelete(item: any): Promise<any>;
+    doDelete(item: any): Subject<any> | boolean;
     delete(item: any): void;
-    doEdit(isNew: boolean, res: any, row?: any): Promise<any>;
+    doEdit(isNew: boolean, res: any, row?: any): Observable<any> | boolean;
     edit(row?: any): void;
     click(row: any, column: any): void;
 }
@@ -87,6 +86,6 @@ export declare class DataTableComponent extends TableComponent {
     constructor(nav: NavigatorService, dialog: DialogService);
     ngOnInit(): void;
     refresh(res?: any): void;
-    doDelete(item: any): Promise<any>;
-    doEdit(isNew: boolean, res: any, row?: any): Promise<any>;
+    doDelete(item: any): Subject<any> | boolean;
+    doEdit(isNew: boolean, res: any, row?: any): Subject<any> | boolean;
 }

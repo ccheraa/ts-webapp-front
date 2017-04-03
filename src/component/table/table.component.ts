@@ -3,9 +3,10 @@ import { ComponentType } from '@angular/material';
 import { NavigatorService, DialogService } from '../../service';
 import { animFade, animFadeProperty } from '../../class';
 import { TableEditorComponent } from '../table-editor/table-editor.component';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { template } from './table.component.html';
 import { ModelClient } from '../../db';
+import { objectAssign } from '@ts-webapp/common';
 
 export type Column = {
   isid?: boolean,
@@ -44,7 +45,7 @@ export class TableComponent implements OnInit {
   @Input() public config: {
     table: string,
     checkbox?: boolean,
-    createID?: (item: any) => Promise<any>,
+    createID?: (item: any) => Observable<any>|Boolean,
     edit?: ComponentType<any>,
     main?: Column;
     columns: Column[]
@@ -224,15 +225,13 @@ export class TableComponent implements OnInit {
     this.refresh();
   }
 
-  doDelete(item: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      for (let i = this.data.length - 1; i >= 0; i--) {
-        if (item ? this.data[i]._id === item._id : this.data[i].selected) {
-          this.data.splice(i, 1);
-        }
+  doDelete(item: any): Subject<any>|boolean {
+    for (let i = this.data.length - 1; i >= 0; i--) {
+      if (item ? this.data[i]._id === item._id : this.data[i].selected) {
+        this.data.splice(i, 1);
       }
-      resolve();
-    });
+    }
+    return true;
   }
   delete(item: any) {
     if (!item && this.selectedCount === 1) {
@@ -241,31 +240,47 @@ export class TableComponent implements OnInit {
     let message = item ? this.config.main.read(item) : this.selectedCount + ' item' + (this.selectedCount > 1 ? 's' : '');
     this.dialog.modal().confirm('Are you sure you want to delete ' + message + '?').subscribe(ok => {
       if (ok) {
-        this.doDelete(item).then(() => {
+        let obs = this.doDelete(item);
+        if (obs === true) {
           this.refresh();
-        });
+        } {
+          (<Observable<any>>obs).subscribe(() => {
+            this.refresh();
+          });
+        }
       }
     });
   }
-  doEdit(isNew: boolean, res: any, row?: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (isNew) {
-        this.config.createID(res).then((res) => {
-          this.data.push(res);
-          resolve();
-        });
+  doEdit(isNew: boolean, res: any, row?: any): Observable<any>|boolean {
+    if (isNew) {
+      let obs = this.config.createID(res)
+      if (obs === true) {
+        this.data.push(res);
+        return;
       } else {
-        row.assign(res);
-        resolve();
+        (<Observable<any>>obs).subscribe((res) => {
+          this.data.push(res);
+          result.next();
+        });
       }
-    });
+    } else {
+      objectAssign(row, res);
+      return;
+    }
+    let result = new Subject<any>();
+    return result;
   }
   edit(row?: any) {
     let isNew = !(row && row._id);
     this.dialog.use(this.config.edit || this.defaultEdit, {columns: this.config.columns, row}, true).subscribe(res => {
-      this.doEdit(isNew, res, row).then(() => {
+      let obs = this.doEdit(isNew, res, row);
+      if (obs === true) {
         this.refresh();
-      });
+      } else {
+        (<Observable<any>>obs).subscribe(() => {
+          this.refresh();
+        });
+      };
     });
   }
   click(row: any, column: any) {
@@ -315,29 +330,29 @@ export class DataTableComponent extends TableComponent {
       this.pager.setCount(res.total);
     });
   }
-  doDelete(item: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (item && item._id) {
-        this.model.remove(item._id).subscribe(() => resolve());
-      } else {
-        let i = this.items.length;
-        let deleteNext = function() {};
-        while (i > 0) {
-          i--;
-          if (this.items[i].selected) {
-            this.model.remove(this.items[i]._id).subscribe(() => i > 0 ? deleteNext() : resolve());
-          }
+  doDelete(item: any): Subject<any>|boolean {
+    let result = new Subject<any>();
+    if (item && item._id) {
+      this.model.remove(item._id).subscribe(() => result.next());
+    } else {
+      let i = this.items.length;
+      let deleteNext = function() {};
+      while (i > 0) {
+        i--;
+        if (this.items[i].selected) {
+          this.model.remove(this.items[i]._id).subscribe(() => i > 0 ? deleteNext() : result.next());
         }
       }
-    });
+    }
+    return result;
   }
-  doEdit(isNew: boolean, res: any, row?: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (isNew) {
-        this.model.create(res).subscribe(() => resolve());
-      } else {
-        this.model.set(row._id, res).subscribe(() => resolve());
-      }
-    });
+  doEdit(isNew: boolean, res: any, row?: any):Subject<any>|boolean {
+    let result = new Subject<any>();
+    if (isNew) {
+      this.model.create(res).subscribe(() => result.next());
+    } else {
+      this.model.set(row._id, res).subscribe(() => result.next());
+    }
+    return result;
   }
 }

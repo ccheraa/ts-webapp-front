@@ -1,4 +1,3 @@
-/// <reference types="es6-promise" />
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
@@ -18,7 +17,7 @@ export declare class NavigatorService implements CanDeactivate<Component> {
     menuObservable: Subject<any[]>;
     canGo: boolean;
     constructor(router: Router, dialog: DialogService, location: Location);
-    canDeactivate(component: Component, route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean;
+    canDeactivate(component: Component, route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean;
     private subscription(id, message);
     stop(): void;
     reject(): void;

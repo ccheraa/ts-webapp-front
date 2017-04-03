@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,11 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
+import { Directive, ElementRef, Output, Input, EventEmitter, HostListener } from '@angular/core';
 var TimeEditorDirective = (function () {
     function TimeEditorDirective(el) {
         this.el = el;
-        this.timeChange = new core_1.EventEmitter(true);
+        this.timeChange = new EventEmitter(true);
     }
     TimeEditorDirective.prototype.ngOnInit = function () {
         if (typeof this.time === 'undefined') {
@@ -34,24 +33,24 @@ var TimeEditorDirective = (function () {
     return TimeEditorDirective;
 }());
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], TimeEditorDirective.prototype, "timeChange", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Date)
 ], TimeEditorDirective.prototype, "time", void 0);
 __decorate([
-    core_1.HostListener('change'),
+    HostListener('change'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], TimeEditorDirective.prototype, "onChange", null);
 TimeEditorDirective = __decorate([
-    core_1.Directive({
+    Directive({
         selector: '[time-value]'
     }),
-    __metadata("design:paramtypes", [core_1.ElementRef])
+    __metadata("design:paramtypes", [ElementRef])
 ], TimeEditorDirective);
-exports.TimeEditorDirective = TimeEditorDirective;
+export { TimeEditorDirective };
 //# sourceMappingURL=time-editor.directive.js.map

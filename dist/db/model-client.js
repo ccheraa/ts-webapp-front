@@ -1,10 +1,9 @@
-"use strict";
-var rxjs_1 = require("rxjs");
-var common_1 = require("@ts-webapp/common");
+import { Subject } from 'rxjs';
+import { DBUrl } from '@ts-webapp/common';
 var ModelClient = (function () {
     function ModelClient() {
         this.url = '/';
-        this.checking = new rxjs_1.Subject();
+        this.checking = new Subject();
     }
     ModelClient.prototype.useLoader = function (loader, loaderName) {
         this.loader = loader;
@@ -45,8 +44,8 @@ var ModelClient = (function () {
     ModelClient.prototype.create = function (document) {
         var _this = this;
         this.load('create:' + this.loaderName);
-        var result = new rxjs_1.Subject();
-        this.http.post(common_1.DBUrl() + this.url, { document: document }).subscribe(function (response) {
+        var result = new Subject();
+        this.http.post(DBUrl() + this.url, { document: document }).subscribe(function (response) {
             _this.unload('create:' + _this.loaderName);
             _this.decodeResponse(result, response, true);
         }, function (err) {
@@ -59,8 +58,8 @@ var ModelClient = (function () {
     ModelClient.prototype.list = function (conditions, projection, options) {
         var _this = this;
         this.load('list:' + this.loaderName);
-        var result = new rxjs_1.Subject();
-        this.http.post(common_1.DBUrl() + this.url, { conditions: conditions, projection: projection, options: options }).subscribe(function (response) {
+        var result = new Subject();
+        this.http.post(DBUrl() + this.url, { conditions: conditions, projection: projection, options: options }).subscribe(function (response) {
             _this.unload('list:' + _this.loaderName);
             _this.decodeResponse(result, response);
         }, function (err) {
@@ -72,8 +71,8 @@ var ModelClient = (function () {
     ModelClient.prototype.find = function (conditions, projection, options) {
         var _this = this;
         this.load('find:' + this.loaderName);
-        var result = new rxjs_1.Subject();
-        this.http.post(common_1.DBUrl() + this.url + '/find', { conditions: conditions, projection: projection, options: options }).subscribe(function (response) {
+        var result = new Subject();
+        this.http.post(DBUrl() + this.url + '/find', { conditions: conditions, projection: projection, options: options }).subscribe(function (response) {
             _this.unload('find:' + _this.loaderName);
             _this.decodeResponse(result, response);
         }, function (err) {
@@ -86,8 +85,8 @@ var ModelClient = (function () {
         var _this = this;
         // TODO: conditions not used
         this.load('count:' + this.loaderName);
-        var result = new rxjs_1.Subject();
-        this.http.get(common_1.DBUrl() + this.url + '/count').subscribe(function (response) {
+        var result = new Subject();
+        this.http.get(DBUrl() + this.url + '/count').subscribe(function (response) {
             _this.unload('count:' + _this.loaderName);
             _this.decodeResponse(result, response);
         }, function (err) {
@@ -100,8 +99,8 @@ var ModelClient = (function () {
         var _this = this;
         // TODO: projection and options not used
         this.load('get:' + this.loaderName);
-        var result = new rxjs_1.Subject();
-        this.http.get(common_1.DBUrl() + this.url + '/' + id).subscribe(function (response) {
+        var result = new Subject();
+        this.http.get(DBUrl() + this.url + '/' + id).subscribe(function (response) {
             _this.unload('get:' + _this.loaderName);
             _this.decodeResponse(result, response);
         }, function (err) {
@@ -115,8 +114,8 @@ var ModelClient = (function () {
         var _this = this;
         // TODO: options not used
         this.load('set:' + this.loaderName);
-        var result = new rxjs_1.Subject();
-        this.http.post(common_1.DBUrl() + this.url + '/' + id, { document: document }).subscribe(function (response) {
+        var result = new Subject();
+        this.http.post(DBUrl() + this.url + '/' + id, { document: document }).subscribe(function (response) {
             _this.unload('set:' + _this.loaderName);
             _this.decodeResponse(result, response, true);
         }, function (err) {
@@ -129,8 +128,8 @@ var ModelClient = (function () {
         var _this = this;
         // TODO: options not used
         this.load('update:' + this.loaderName);
-        var result = new rxjs_1.Subject();
-        this.http.put(common_1.DBUrl() + this.url, { conditions: conditions, document: document }).subscribe(function (response) {
+        var result = new Subject();
+        this.http.put(DBUrl() + this.url, { conditions: conditions, document: document }).subscribe(function (response) {
             _this.unload('update:' + _this.loaderName);
             _this.decodeResponse(result, response, true);
         }, function (err) {
@@ -142,9 +141,9 @@ var ModelClient = (function () {
     ModelClient.prototype.remove = function (conditions) {
         var _this = this;
         this.load('remove:' + this.loaderName);
-        var result = new rxjs_1.Subject();
+        var result = new Subject();
         var isString = typeof conditions === 'string';
-        this.http.delete(common_1.DBUrl() + this.url + (isString ? '/' + conditions : ''), isString ? null : { body: { conditions: conditions } }).subscribe(function (response) {
+        this.http.delete(DBUrl() + this.url + (isString ? '/' + conditions : ''), isString ? null : { body: { conditions: conditions } }).subscribe(function (response) {
             _this.unload('remove:' + _this.loaderName);
             _this.decodeResponse(result, response, true);
         }, function (err) {
@@ -155,5 +154,5 @@ var ModelClient = (function () {
     };
     return ModelClient;
 }());
-exports.ModelClient = ModelClient;
+export { ModelClient };
 //# sourceMappingURL=model-client.js.map

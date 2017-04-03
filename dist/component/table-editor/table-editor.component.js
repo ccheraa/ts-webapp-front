@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,9 +7,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var material_1 = require("@angular/material");
-var table_editor_component_html_1 = require("./table-editor.component.html");
+import { Component } from '@angular/core';
+import { MdDialogRef } from '@angular/material';
+import { template } from './table-editor.component.html';
+import { objectAssign } from '@ts-webapp/common';
 var TableEditorComponent = (function () {
     function TableEditorComponent(dialog) {
         this.dialog = dialog;
@@ -26,7 +26,7 @@ var TableEditorComponent = (function () {
         if (this.data) {
             console.log(this.data);
             this.cleanColumns();
-            this.edited.assign(this.data.row);
+            objectAssign(this.edited, this.data.row);
         }
     };
     TableEditorComponent.prototype.dateChange = function (column, event) {
@@ -55,11 +55,11 @@ var TableEditorComponent = (function () {
     return TableEditorComponent;
 }());
 TableEditorComponent = __decorate([
-    core_1.Component({
+    Component({
         selector: 'app-table-editor',
-        template: table_editor_component_html_1.template,
+        template: template,
     }),
-    __metadata("design:paramtypes", [material_1.MdDialogRef])
+    __metadata("design:paramtypes", [MdDialogRef])
 ], TableEditorComponent);
-exports.TableEditorComponent = TableEditorComponent;
+export { TableEditorComponent };
 //# sourceMappingURL=table-editor.component.js.map

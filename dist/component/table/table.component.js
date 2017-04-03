@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -13,20 +12,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var service_1 = require("../../service");
-var class_1 = require("../../class");
-var table_editor_component_1 = require("../table-editor/table-editor.component");
-var rxjs_1 = require("rxjs");
-var table_component_html_1 = require("./table.component.html");
-var db_1 = require("../../db");
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { NavigatorService, DialogService } from '../../service';
+import { animFade, animFadeProperty } from '../../class';
+import { TableEditorComponent } from '../table-editor/table-editor.component';
+import { Subject } from 'rxjs';
+import { template } from './table.component.html';
+import { ModelClient } from '../../db';
+import { objectAssign } from '@ts-webapp/common';
 var TableComponent = (function () {
     function TableComponent(nav, dialog) {
         this.nav = nav;
         this.dialog = dialog;
-        this.selectionChange = new core_1.EventEmitter();
+        this.selectionChange = new EventEmitter();
         this.data = [];
-        this.defaultEdit = table_editor_component_1.TableEditorComponent;
+        this.defaultEdit = TableEditorComponent;
         this.pagesOption = [10, 20, 50, 100];
         this.limit = 20;
         this.pager = {
@@ -93,7 +93,7 @@ var TableComponent = (function () {
     TableComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.tableBody.nativeElement.addEventListener('scroll', this.onScroll.bind(this));
-        this.keypress = new rxjs_1.Subject();
+        this.keypress = new Subject();
         this.keypress.debounceTime(1000)
             .subscribe(function (res) {
             _this.refresh();
@@ -199,15 +199,12 @@ var TableComponent = (function () {
         this.refresh();
     };
     TableComponent.prototype.doDelete = function (item) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            for (var i = _this.data.length - 1; i >= 0; i--) {
-                if (item ? _this.data[i]._id === item._id : _this.data[i].selected) {
-                    _this.data.splice(i, 1);
-                }
+        for (var i = this.data.length - 1; i >= 0; i--) {
+            if (item ? this.data[i]._id === item._id : this.data[i].selected) {
+                this.data.splice(i, 1);
             }
-            resolve();
-        });
+        }
+        return true;
     };
     TableComponent.prototype.delete = function (item) {
         var _this = this;
@@ -217,34 +214,54 @@ var TableComponent = (function () {
         var message = item ? this.config.main.read(item) : this.selectedCount + ' item' + (this.selectedCount > 1 ? 's' : '');
         this.dialog.modal().confirm('Are you sure you want to delete ' + message + '?').subscribe(function (ok) {
             if (ok) {
-                _this.doDelete(item).then(function () {
+                var obs = _this.doDelete(item);
+                if (obs === true) {
                     _this.refresh();
-                });
+                }
+                {
+                    obs.subscribe(function () {
+                        _this.refresh();
+                    });
+                }
             }
         });
     };
     TableComponent.prototype.doEdit = function (isNew, res, row) {
         var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (isNew) {
-                _this.config.createID(res).then(function (res) {
-                    _this.data.push(res);
-                    resolve();
-                });
+        if (isNew) {
+            var obs = this.config.createID(res);
+            if (obs === true) {
+                this.data.push(res);
+                return;
             }
             else {
-                row.assign(res);
-                resolve();
+                obs.subscribe(function (res) {
+                    _this.data.push(res);
+                    result.next();
+                });
             }
-        });
+        }
+        else {
+            objectAssign(row, res);
+            return;
+        }
+        var result = new Subject();
+        return result;
     };
     TableComponent.prototype.edit = function (row) {
         var _this = this;
         var isNew = !(row && row._id);
         this.dialog.use(this.config.edit || this.defaultEdit, { columns: this.config.columns, row: row }, true).subscribe(function (res) {
-            _this.doEdit(isNew, res, row).then(function () {
+            var obs = _this.doEdit(isNew, res, row);
+            if (obs === true) {
                 _this.refresh();
-            });
+            }
+            else {
+                obs.subscribe(function () {
+                    _this.refresh();
+                });
+            }
+            ;
         });
     };
     TableComponent.prototype.click = function (row, column) {
@@ -259,35 +276,35 @@ var TableComponent = (function () {
     return TableComponent;
 }());
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], TableComponent.prototype, "selectionChange", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Array)
 ], TableComponent.prototype, "data", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], TableComponent.prototype, "selection", null);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], TableComponent.prototype, "config", void 0);
 __decorate([
-    core_1.ViewChild('tableBody'),
+    ViewChild('tableBody'),
     __metadata("design:type", Object)
 ], TableComponent.prototype, "tableBody", void 0);
 TableComponent = __decorate([
-    core_1.Component({
-        template: table_component_html_1.template,
+    Component({
+        template: template,
         selector: 'md-table',
-        animations: [class_1.animFade('fade'), class_1.animFadeProperty('search', 'true', 'false')],
+        animations: [animFade('fade'), animFadeProperty('search', 'true', 'false')],
     }),
-    __metadata("design:paramtypes", [service_1.NavigatorService, service_1.DialogService])
+    __metadata("design:paramtypes", [NavigatorService, DialogService])
 ], TableComponent);
-exports.TableComponent = TableComponent;
+export { TableComponent };
 var DataTableComponent = (function (_super) {
     __extends(DataTableComponent, _super);
     function DataTableComponent(nav, dialog) {
@@ -322,47 +339,45 @@ var DataTableComponent = (function (_super) {
         });
     };
     DataTableComponent.prototype.doDelete = function (item) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (item && item._id) {
-                _this.model.remove(item._id).subscribe(function () { return resolve(); });
-            }
-            else {
-                var i_1 = _this.items.length;
-                var deleteNext_1 = function () { };
-                while (i_1 > 0) {
-                    i_1--;
-                    if (_this.items[i_1].selected) {
-                        _this.model.remove(_this.items[i_1]._id).subscribe(function () { return i_1 > 0 ? deleteNext_1() : resolve(); });
-                    }
+        var result = new Subject();
+        if (item && item._id) {
+            this.model.remove(item._id).subscribe(function () { return result.next(); });
+        }
+        else {
+            var i_1 = this.items.length;
+            var deleteNext_1 = function () { };
+            while (i_1 > 0) {
+                i_1--;
+                if (this.items[i_1].selected) {
+                    this.model.remove(this.items[i_1]._id).subscribe(function () { return i_1 > 0 ? deleteNext_1() : result.next(); });
                 }
             }
-        });
+        }
+        return result;
     };
     DataTableComponent.prototype.doEdit = function (isNew, res, row) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (isNew) {
-                _this.model.create(res).subscribe(function () { return resolve(); });
-            }
-            else {
-                _this.model.set(row._id, res).subscribe(function () { return resolve(); });
-            }
-        });
+        var result = new Subject();
+        if (isNew) {
+            this.model.create(res).subscribe(function () { return result.next(); });
+        }
+        else {
+            this.model.set(row._id, res).subscribe(function () { return result.next(); });
+        }
+        return result;
     };
     return DataTableComponent;
 }(TableComponent));
 __decorate([
-    core_1.Input(),
-    __metadata("design:type", db_1.ModelClient)
+    Input(),
+    __metadata("design:type", ModelClient)
 ], DataTableComponent.prototype, "model", void 0);
 DataTableComponent = __decorate([
-    core_1.Component({
-        template: table_component_html_1.template,
+    Component({
+        template: template,
         selector: 'md-data-table',
-        animations: [class_1.animFade('fade'), class_1.animFadeProperty('search', 'true', 'false')],
+        animations: [animFade('fade'), animFadeProperty('search', 'true', 'false')],
     }),
-    __metadata("design:paramtypes", [service_1.NavigatorService, service_1.DialogService])
+    __metadata("design:paramtypes", [NavigatorService, DialogService])
 ], DataTableComponent);
-exports.DataTableComponent = DataTableComponent;
+export { DataTableComponent };
 //# sourceMappingURL=table.component.js.map
