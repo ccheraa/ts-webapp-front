@@ -33,23 +33,7 @@
       <button md-icon-button back mdTooltip="Home" [disabled]="isHome ? true : null" (click)="back()"><md-icon *ngIf="!isHome">arrow_{{rtl ? 'forward' : 'back'}}</md-icon></button>
       <span> {{title}}</span>
       <span fl></span>
-      <button md-icon-button (click)="test()">
-        <md-icon>code</md-icon>
-      </button>
-      <button md-icon-button (click)="mainPane=!mainPane">
-        <md-icon>menu</md-icon>
-      </button>
-      <button md-icon-button (click)="sidePane=!sidePane">
-        <md-icon>chrome_reader_mode</md-icon>
-      </button>
-      <button md-icon-button (click)="dark=!dark;setDark()">
-        <md-icon>color_lens</md-icon>
-      </button>
-      <button md-icon-button (click)="rtl=!rtl;setRtl()">
-        <md-icon>swap_horiz</md-icon>
-      </button>
-      <span fl></span>
-      <button md-icon-button avatar mdTooltip="About" (click)="sidePane=!sidePane">
+      <button md-icon-button avatar mdTooltip="About" (click)="toggleSidePane()">
         <img *ngIf="user" [src]="'/res/img/user/' + user.username + '.jpg'" alt="">
         <md-icon *ngIf="!user">account_circle</md-icon>
       </button>

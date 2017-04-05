@@ -1,6 +1,6 @@
 import { OnInit } from '@angular/core';
 import { MenuItemClass } from '@ts-webapp/common';
-import { MenuService, LoaderService, UserService, DialogService, NavigatorService } from '../../service';
+import { MenuService, LoaderService, UserService, DialogService, NavigatorService, AppService } from '../../service';
 export declare class AppComponent implements OnInit {
     private document;
     private menuService;
@@ -8,11 +8,12 @@ export declare class AppComponent implements OnInit {
     private dialogService;
     private loaderService;
     private navigator;
+    private app;
     dark: boolean;
     rtl: boolean;
     isHome: boolean;
-    leftPane: boolean;
-    rightPane: boolean;
+    mainPane: boolean;
+    sidePane: boolean;
     user: boolean;
     shaded: boolean;
     loading: boolean;
@@ -20,9 +21,13 @@ export declare class AppComponent implements OnInit {
     title: string;
     settings: MenuItemClass[];
     menu: MenuItemClass[];
-    constructor(document: any, menuService: MenuService, userService: UserService, dialogService: DialogService, loaderService: LoaderService, navigator: NavigatorService);
+    constructor(document: any, menuService: MenuService, userService: UserService, dialogService: DialogService, loaderService: LoaderService, navigator: NavigatorService, app: AppService);
     body: any;
     ngOnInit(): void;
+    toggleMainPane(): void;
+    toggleSidePane(): void;
+    toggleDark(): void;
+    toggleRTL(): void;
     onScroll(): void;
     setDark(): void;
     setRtl(): void;

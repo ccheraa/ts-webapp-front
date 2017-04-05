@@ -4,12 +4,11 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { join } from 'path';
 
 import { MenuItemClass } from '@ts-webapp/common';
-import { MenuService, LoaderService, UserService, DialogService, NavigatorService } from '../../service';
+import { MenuService, LoaderService, UserService, DialogService, NavigatorService, AppService } from '../../service';
 
 @Component({
   selector: 'app-root',
-  template: `
-<div class="app">
+  template: `<div class="app">
   <div class="sidebar main" always [class.wide]="mainPane">
     <div class="sidebar-overlay" (click)="mainPane=false"></div>
     <span class="title">TS-APP</span>
@@ -44,23 +43,7 @@ import { MenuService, LoaderService, UserService, DialogService, NavigatorServic
       <button md-icon-button back mdTooltip="Home" [disabled]="isHome ? true : null" (click)="back()"><md-icon *ngIf="!isHome">arrow_{{rtl ? 'forward' : 'back'}}</md-icon></button>
       <span> {{title}}</span>
       <span fl></span>
-      <button md-icon-button (click)="test()">
-        <md-icon>code</md-icon>
-      </button>
-      <button md-icon-button (click)="mainPane=!mainPane">
-        <md-icon>menu</md-icon>
-      </button>
-      <button md-icon-button (click)="sidePane=!sidePane">
-        <md-icon>chrome_reader_mode</md-icon>
-      </button>
-      <button md-icon-button (click)="dark=!dark;setDark()">
-        <md-icon>color_lens</md-icon>
-      </button>
-      <button md-icon-button (click)="rtl=!rtl;setRtl()">
-        <md-icon>swap_horiz</md-icon>
-      </button>
-      <span fl></span>
-      <button md-icon-button avatar mdTooltip="About" (click)="sidePane=!sidePane">
+      <button md-icon-button avatar mdTooltip="About" (click)="toggleSidePane()">
         <img *ngIf="user" [src]="'/res/img/user/' + user.username + '.jpg'" alt="">
         <md-icon *ngIf="!user">account_circle</md-icon>
       </button>
@@ -89,8 +72,8 @@ export class AppComponent implements OnInit {
   dark = false;
   rtl = false;
   isHome = false;
-  leftPane = false;
-  rightPane = false;
+  mainPane = false;
+  sidePane = false;
   user = false;
   shaded = false;
   loading = false;
@@ -109,7 +92,7 @@ export class AppComponent implements OnInit {
     { text: 'Scans', icon: 'scanner', id: 'scans' },
   ];
   menu: MenuItemClass[] = [];
-  constructor(@Inject(DOCUMENT) private document: any, private menuService: MenuService, private userService: UserService, private dialogService: DialogService, private loaderService: LoaderService, private navigator: NavigatorService) {}
+  constructor(@Inject(DOCUMENT) private document: any, private menuService: MenuService, private userService: UserService, private dialogService: DialogService, private loaderService: LoaderService, private navigator: NavigatorService, private app: AppService) {}
   @ViewChild('body') body: any;
   ngOnInit() {
     this.loaderService.check().subscribe(loading => this.loading = loading);
@@ -121,9 +104,34 @@ export class AppComponent implements OnInit {
       this.menu = items;
     });
     this.userService.check(true).subscribe(response => this.user = response.user);
+    this.app.checkMainPane().subscribe(mainPane => this.mainPane = mainPane);
+    this.app.checkSidePane().subscribe(sidePane => this.sidePane = sidePane);
+    this.app.checkDark().subscribe(dark => {
+      this.dark = dark;
+      this.setDark();
+    });
     this.setDark();
-    this.setRtl();
+    this.app.checkRTL().subscribe(rtl => {
+      this.rtl = rtl;
+      this.setRtl();
+    });
+    this.app.setMainPane(this.mainPane);
+    this.app.setSidePane(this.sidePane);
+    this.app.setDark(this.dark);
+    this.app.setRTL(this.rtl);
     // this.msgService.confirm('Yo!');
+  }
+  toggleMainPane() {
+    this.app.toggleMainPane();
+  }
+  toggleSidePane() {
+    this.app.toggleSidePane();
+  }
+  toggleDark() {
+    this.app.toggleDark();
+  }
+  toggleRTL() {
+    this.app.toggleRTL();
   }
   onScroll() {
     // console.log(this);

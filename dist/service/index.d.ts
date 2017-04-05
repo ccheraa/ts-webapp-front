@@ -3,4 +3,5 @@ export * from './user.service';
 export * from './dialog.service';
 export * from './navigator.service';
 export * from './menu.service';
+export * from './app.service';
 export declare const LIB_SERVICES: any[];
