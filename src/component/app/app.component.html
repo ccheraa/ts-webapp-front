@@ -1,8 +1,8 @@
 <div class="app">
   <div class="sidebar main" always [class.wide]="mainPane">
-    <div class="sidebar-overlay" (click)="mainPane=false"></div>
+    <div class="sidebar-overlay" (click)="toggleMainPane()"></div>
     <span class="title">TS-APP</span>
-    <button md-icon-button menu (click)="mainPane = !mainPane" [mdTooltip]="mainPane ? 'collapse' : 'expand'" mdTooltipPosition="after">
+    <button md-icon-button menu (click)="toggleMainPane()" [mdTooltip]="mainPane ? 'collapse' : 'expand'" mdTooltipPosition="after">
       <md-icon>menu</md-icon>
       <md-icon wide>chevron_{{rtl ? 'right' : 'left'}}</md-icon>
     </button>
@@ -51,7 +51,7 @@
     </div>
   </div>
   <div class="sidebar side" [class.wide]="sidePane">
-    <div class="sidebar-overlay" (click)="sidePane=false"></div>
+    <div class="sidebar-overlay" (click)="toggleSidePane()"></div>
     <app-side></app-side>
   </div>
 </div>
